@@ -41,15 +41,17 @@ namespace TaskManager.API
                 .FirstOrDefaultAsync(ct);
 
             if (user == null) return NotFound();
-            
+
             return Ok(user);
         }
 
         [HttpPost("register")]
         public async Task<ActionResult<UserReadDto>> Register([FromBody] UserRegisterDto dto, CancellationToken ct)
         {
-            if (await _context.Users.AnyAsync(u => u.Email == dto.Email, ct))
+            if (await _context.Users.AnyAsync(user => user.Email == dto.Email, ct))
+            {
                 return BadRequest("Email already registered.");
+            };
 
             var user = new User
             {
@@ -61,6 +63,26 @@ namespace TaskManager.API
             await _context.SaveChangesAsync(ct);
 
             return CreatedAtAction(nameof(GetById), new { id = user.Id }, new UserReadDto(user.Id, user.Email));
+        }
+
+        [HttpPost("login")]
+        public async Task<ActionResult<UserLoginResponseDto>> Login([FromBody] UserLoginDto dto, CancellationToken ct)
+        {
+            var user = await _context.Users
+                .FirstOrDefaultAsync(user => user.Email == dto.Email, ct);
+
+            if (user == null)
+            {
+                return Unauthorized("Invalid email or password.");
+            };
+
+            var result = _hasher.VerifyHashedPassword(user, user.PasswordHash, dto.Password);
+            if (result == PasswordVerificationResult.Failed)
+            {
+                return Unauthorized("Invalid email or password.");
+            };
+
+            return Ok(new UserLoginResponseDto(user.Id, user.Email, "Use header: X-Demo-UserId: " + user.Id));
         }
     
     }
