@@ -25,7 +25,11 @@ namespace TaskManager.API
         [HttpGet]
         public async Task<ActionResult<IEnumerable<TaskReadDto>>> GetAll(CancellationToken ct)
         {
-            var userId = HttpContext.GetUserId()!.Value;
+            var userId = HttpContext.GetUserId();
+            if (userId is null)
+            {
+                return Unauthorized();
+            };
 
             var tasks = await _context.Tasks
                         .Where(task => task.UserId == userId)
@@ -38,7 +42,11 @@ namespace TaskManager.API
         [HttpGet("{id:int}")]
         public async Task<ActionResult<TaskReadDto>> GetById(int id, CancellationToken ct)
         {
-            var userId = HttpContext.GetUserId()!.Value;
+            var userId = HttpContext.GetUserId();
+            if (userId is null)
+            {
+                return Unauthorized();
+            };
 
             var task = await _context.Tasks
                 .Where(t => t.Id == id && t.UserId == userId)
@@ -53,13 +61,17 @@ namespace TaskManager.API
         [HttpPost]
          public async Task<ActionResult<TaskReadDto>> Create([FromBody] TaskCreateDto dto, CancellationToken ct)
         {
-            var userId = HttpContext.GetUserId()!.Value;
+            var userId = HttpContext.GetUserId();
+            if (userId is null)
+            {
+                return Unauthorized();
+            };
 
             var task = new TaskItem
             {
                 Title = dto.Title,
                 IsDone = dto.IsDone,
-                UserId = userId
+                UserId = userId.Value
             }; 
 
             _context.Tasks.Add(task);
@@ -75,7 +87,12 @@ namespace TaskManager.API
         {
             if (id != dto.Id) return BadRequest("Route id and body id do not match.");
 
-            var userId = HttpContext.GetUserId()!.Value;
+            var userId = HttpContext.GetUserId();
+            if (userId is null)
+            {
+                return Unauthorized();
+            };
+
             var task = await _context.Tasks.FirstOrDefaultAsync(task => task.Id == id && task.UserId == userId, ct);
             if (task == null) return NotFound();
 
@@ -91,7 +108,11 @@ namespace TaskManager.API
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> Delete(int id, CancellationToken ct)
         {
-            var userId = HttpContext.GetUserId()!.Value;
+            var userId = HttpContext.GetUserId();
+            if (userId is null)
+            {
+                return Unauthorized();
+            };
 
             var task = await _context.Tasks.FirstOrDefaultAsync(task => task.Id == id && task.UserId == userId, ct);
             if (task == null) return NotFound();
