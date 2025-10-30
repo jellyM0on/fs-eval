@@ -1,5 +1,4 @@
 import {
-  BrowserRouter,
   Link,
   Navigate,
   Outlet,
@@ -11,7 +10,7 @@ import {
 import { useAuth } from "./auth/AuthContext";
 
 import Login from "./pages/Login";
-// import Register from "./pages/Register";
+import Register from "./pages/Register";
 // import Tasks from "./pages/Tasks";
 
 function HomeRedirect() {
@@ -67,7 +66,6 @@ function Layout() {
       >
         <div style={{ display: "flex", gap: 12 }}>
           <Link to="/">Home</Link>
-          {user && <Link to="/tasks">Tasks</Link>}
         </div>
 
         {user ? (
@@ -103,24 +101,18 @@ function Layout() {
 
 export default function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomeRedirect />} />
 
           <Route
             path="/tasks"
-            element={
-              <PrivateRoute>
-                {/* <Tasks /> */}
-              </PrivateRoute>
-            }
+            element={<PrivateRoute>{/* <Tasks /> */}</PrivateRoute>}
           />
 
           <Route path="/login" element={<Login />} />
-          {/* <Route path="/register" element={<Register />} /> */}
+          <Route path="/register" element={<Register />} />
         </Route>
       </Routes>
-    </BrowserRouter>
   );
 }
