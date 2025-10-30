@@ -16,7 +16,7 @@
 - Additional frontend features
 - Responsiveness
 
-### How to start
+## How to start
 - Start backend
   - `cd ./backend`
   - `dotnet restore`
@@ -31,7 +31,7 @@
   - `npm install`. Run `npm audit fix` if there are errors
   - `npm run dev`
 
-### Demo
+## Demo
 
 https://github.com/user-attachments/assets/e21e157d-3f46-466a-8a4d-681059180f46
 
