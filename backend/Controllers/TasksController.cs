@@ -88,16 +88,18 @@ namespace TaskManager.API
             return Ok(updatedTask);
         }
 
-        // [HttpDelete("{id}")]
-        // public async Task<IActionResult> Delete(int id)
-        // {
-        //     var task = await _context.Tasks.FindAsync(id);
-        //     if (task == null) return NotFound();
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> Delete(int id, CancellationToken ct)
+        {
+            var userId = HttpContext.GetUserId()!.Value;
 
-        //     _context.Tasks.Remove(task);
-        //     await _context.SaveChangesAsync();
+            var task = await _context.Tasks.FirstOrDefaultAsync(task => task.Id == id && task.UserId == userId, ct);
+            if (task == null) return NotFound();
 
-        //     return NoContent();
-        // }
+            _context.Tasks.Remove(task);
+            await _context.SaveChangesAsync(ct);
+
+            return NoContent();
+        }
     }
 }
