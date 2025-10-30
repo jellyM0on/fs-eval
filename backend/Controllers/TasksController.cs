@@ -35,6 +35,21 @@ namespace TaskManager.API
             return Ok(tasks);
         }
 
+        [HttpGet("{id:int}")]
+        public async Task<ActionResult<TaskReadDto>> GetById(int id, CancellationToken ct)
+        {
+            var userId = HttpContext.GetUserId()!.Value;
+
+            var task = await _context.Tasks
+                .Where(t => t.Id == id && t.UserId == userId)
+                .Select(task => new TaskReadDto(task.Id, task.Title, task.IsDone, task.UserId))
+                .FirstOrDefaultAsync(ct);
+
+            if (task == null) return NotFound();
+            
+            return Ok(task);
+        }
+
         // [HttpPost]
         // public async Task<IActionResult> Create([FromBody] TaskItem task)
         // {
