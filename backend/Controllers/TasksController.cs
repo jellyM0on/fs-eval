@@ -70,18 +70,23 @@ namespace TaskManager.API
             return CreatedAtAction(nameof(GetById), new { id = createdTask.Id }, createdTask);
         }
 
-        // [HttpPut("{id}")] 
-        // public async Task<IActionResult> Update(int id, [FromBody] TaskItem updated)
-        // {
-        //     var task = await _context.Tasks.FindAsync(id);
-        //     if (task == null) return NotFound();
+        [HttpPut("{id:int}")] 
+        public async Task<ActionResult<TaskReadDto>> Update(int id, [FromBody] TaskUpdateDto dto, CancellationToken ct)
+        {
+            if (id != dto.Id) return BadRequest("Route id and body id do not match.");
 
-        //     task.Title = updated.Title;
-        //     task.IsDone = updated.IsDone;
-        //     await _context.SaveChangesAsync();
+            var userId = HttpContext.GetUserId()!.Value;
+            var task = await _context.Tasks.FirstOrDefaultAsync(task => task.Id == id && task.UserId == userId, ct);
+            if (task == null) return NotFound();
 
-        //     return Ok(task);
-        // }
+            task.Title = dto.Title;
+            task.IsDone = dto.IsDone;
+            await _context.SaveChangesAsync();
+
+            var updatedTask = new TaskReadDto(task.Id, task.Title, task.IsDone, task.UserId);
+
+            return Ok(updatedTask);
+        }
 
         // [HttpDelete("{id}")]
         // public async Task<IActionResult> Delete(int id)
