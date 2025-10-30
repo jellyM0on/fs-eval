@@ -17,11 +17,6 @@ api.interceptors.response.use(
     if (err?.response?.status === 401 || err?.response?.status === 403) {
       localStorage.removeItem("userId");
       localStorage.removeItem("email");
-      try {
-        window.location.href = "/login";
-      } catch (err) {
-        console.error(err);
-      }
     }
     return Promise.reject(err);
   }
