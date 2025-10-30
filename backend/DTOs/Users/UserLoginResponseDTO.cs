@@ -1,4 +1,4 @@
 namespace TaskManager.DTOs.Users
 {
-    public record LoginResponseDto(int Id, string Email, string HeaderInstruction);
+    public record UserLoginResponseDto(int Id, string Email, string HeaderInstruction);
 }
