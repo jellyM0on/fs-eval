@@ -52,7 +52,6 @@ export default function Register() {
           value={form.email}
           onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
           style={inputStyle}
-          onFocus={(e) => Object.assign(e.target.style)}
           onBlur={(e) => Object.assign(e.target.style, inputStyle)}
           required
         />
@@ -63,7 +62,6 @@ export default function Register() {
           value={form.password}
           onChange={(e) => setForm((f) => ({ ...f, password: e.target.value }))}
           style={inputStyle}
-          onFocus={(e) => Object.assign(e.target.style)}
           onBlur={(e) => Object.assign(e.target.style, inputStyle)}
           required
         />
