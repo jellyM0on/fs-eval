@@ -11,7 +11,7 @@ import { useAuth } from "./auth/AuthContext";
 
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-// import Tasks from "./pages/Tasks";
+import Tasks from "./pages/Tasks";
 
 function HomeRedirect() {
   const { user } = useAuth() || {};
@@ -101,18 +101,18 @@ function Layout() {
 
 export default function App() {
   return (
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<HomeRedirect />} />
+    <Routes>
+      <Route element={<Layout />}>
+        <Route path="/" element={<HomeRedirect />} />
 
-          <Route
-            path="/tasks"
-            element={<PrivateRoute>{/* <Tasks /> */}</PrivateRoute>}
-          />
+        <Route
+          path="/tasks"
+          element={<PrivateRoute>{<Tasks />}</PrivateRoute>}
+        />
 
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-        </Route>
-      </Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Route>
+    </Routes>
   );
 }
