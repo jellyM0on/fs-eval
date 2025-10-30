@@ -1,51 +1,37 @@
-# 🧪 Full-Stack Evaluator – Technical Exam
+## New Implementation
+- Added UsersController 
+  - Login
+  - Register
+  - Get User By Id
+- Refactored TasksController routes
+- Added DTOs so only necessary fields are exposed depending on the route
+- Added CORS configs
+- Added pages
+  - Login/Registration
+  - Tasks
+- Added minimal styling with inline css
 
-Welcome to the technical evaluation!
+## Out of Scope
+- Security. Only demo authentication implemented
+- Additional frontend features
+- Responsiveness
 
-This monorepo contains both the **backend (.NET 9 Web API)** and **frontend (React)** projects. Your task is to build and/or fix key parts of this intentionally incomplete system. Expect quirks. Think like a dev in the wild.
+### How to start
+- Start backend
+  - `cd ./backend`
+  - `dotnet restore`
+  - Export DB credentials. 
+    - Can edit appsettings.json or `export ConnectionStrings__DefaultConnection="Host=localhost;Database=taskmanager;Username=<name>;Password=<pass>"` (Bash) or `$env:ConnectionStrings__DefaultConnection = "Host=localhost;Database=taskmanager;Username=<name>;Password=<pass>"` (Powershell)
+  - `dotnet ef database update`
+  - `dotnet run`
+- Start frontend
+  - `cd ../frontend`
+  - In an .env file, supply:
+    - `VITE_API_BASE_URL=http://localhost:5215`. URL should match your server
+  - `npm install`. Run `npm audit fix` if there are errors
+  - `npm run dev`
 
----
+### Demo
 
-## ⏱️ Time Limit
+https://github.com/user-attachments/assets/e21e157d-3f46-466a-8a4d-681059180f46
 
-**4 to 5 hours**  
-Treat this like a timed test. Don’t overthink it. Show your best work in that window.
-
----
-
-## 🎯 Objectives
-
-- ✅ Connect frontend to the existing API
-- 🔧 Implement or complete missing backend logic
-- 🔄 Handle real-world scenarios (partial data, errors, state)
-- 💅 Code should be clean, structured, and readable
-- 📦 Commit regularly — **no one big fat commit**
-
----
-
-## 📦 Stack Overview
-
-### Backend
-
-- .NET 9 Web API
-- Entity Framework Core
-- PostgreSQL
-- Swagger docs
-
-### Frontend
-
-- React + Axios
-- Redux Toolkit (if present)
-- Vite (dev server)
-- Styled however you like (no CSS wars)
-
----
-
-✅ Submission Guidelines
-- Push your code to a public GitHub repo
-- Include a short write-up in your commit messages or a NOTES.md file:
-- What you implemented
-- What’s missing (if any)
-- How to test your changes
-
-Good luck. Build smart. Code loud. 💻🔥
