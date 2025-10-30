@@ -86,7 +86,7 @@ export default function Tasks() {
   }
 
   async function handleDelete() {
-    if (!deleteId) return;
+    if (deleteId == null) return;
     try {
       await api.delete(`/tasks/${deleteId}`);
       setShowModal(false);
