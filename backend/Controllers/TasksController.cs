@@ -46,18 +46,29 @@ namespace TaskManager.API
                 .FirstOrDefaultAsync(ct);
 
             if (task == null) return NotFound();
-            
+
             return Ok(task);
         }
 
-        // [HttpPost]
-        // public async Task<IActionResult> Create([FromBody] TaskItem task)
-        // {
-            
-        //     _context.Tasks.Add(task);
-        //     await _context.SaveChangesAsync();
-        //     return CreatedAtAction(nameof(Get), new { id = task.Id }, task);
-        // }
+        [HttpPost]
+         public async Task<ActionResult<TaskReadDto>> Create([FromBody] TaskCreateDto dto, CancellationToken ct)
+        {
+            var userId = HttpContext.GetUserId()!.Value;
+
+            var task = new TaskItem
+            {
+                Title = dto.Title,
+                IsDone = dto.IsDone,
+                UserId = userId
+            }; 
+
+            _context.Tasks.Add(task);
+            await _context.SaveChangesAsync(ct);
+
+            var createdTask = new TaskReadDto(task.Id, task.Title, task.IsDone, task.UserId);
+
+            return CreatedAtAction(nameof(GetById), new { id = createdTask.Id }, createdTask);
+        }
 
         // [HttpPut("{id}")] 
         // public async Task<IActionResult> Update(int id, [FromBody] TaskItem updated)
