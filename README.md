@@ -22,8 +22,8 @@
   - `dotnet restore`
   - Export DB credentials. 
     - Can edit appsettings.json or `export ConnectionStrings__DefaultConnection="Host=localhost;Database=taskmanager;Username=<name>;Password=<pass>"` (Bash) or `$env:ConnectionStrings__DefaultConnection = "Host=localhost;Database=taskmanager;Username=<name>;Password=<pass>"` (Powershell)
-    - `dotnet ef database update`
-    - `dotnet run`
+  - `dotnet ef database update`
+  - `dotnet run`
 - Start frontend
   - `cd ../frontend`
   - In an .env file, supply:
